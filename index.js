@@ -25,6 +25,7 @@ async function run() {
         console.log('connected to database')
         const database = client.db("travel");
         const servicesCollection = database.collection('services');
+        const orderCollection = database.collection('myorders')
 
         // GET API
         app.get('/services', async (req, res) => {
@@ -49,11 +50,35 @@ async function run() {
             console.log(result)
             res.json(result)
         })
+        // post ORDERS API 
+        app.post('/myorders', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            console.log(result)
 
+            res.json(result);
+        })
+        // get orders api
+        app.get('/myorders', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const orders = await cursor.toArray();
+            console.log('get data from database', orders)
+            res.send(orders);
+        })
 
-
+        // GET Single Order
+        app.get('/myorders/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('getting specific service', id);
+            const query = { _id: ObjectId(id) };
+            const order = await orderCollection.findOne(query);
+            res.json(order);
+        })
 
     }
+
+
+
     finally {
 
     }
