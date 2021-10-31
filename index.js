@@ -67,7 +67,7 @@ async function run() {
             res.send(orders);
         })
 
-        GET Single Order
+        // GET Single Order
         app.get('/myorders/:id', async (req, res) => {
             const id = req.params.id;
             console.log('getting specific service', id);
