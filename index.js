@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+//  midleWare
 
 app.use(cors());
 app.use(express.json());
@@ -66,7 +67,7 @@ async function run() {
             res.send(orders);
         })
 
-        // GET Single Order
+        GET Single Order
         app.get('/myorders/:id', async (req, res) => {
             const id = req.params.id;
             console.log('getting specific service', id);
@@ -75,6 +76,17 @@ async function run() {
             res.json(order);
         })
 
+
+        // delete api 
+        app.delete('/myorders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {
+                _id: ObjectId(id)
+            }
+            const result = await orderCollection.deleteOne(query)
+            console.log('deleting the user', result);
+            res.json(result);
+        });
     }
 
 
